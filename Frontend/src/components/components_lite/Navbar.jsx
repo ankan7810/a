@@ -39,8 +39,8 @@ const Navbar = () => {
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
         <div>
           <h1 className="text-2xl font-bold">
-            <span className="text-[#6B3AC2]"> Job </span>{" "}
-            <span className="text-[#FA4F09]">Portal</span>
+            <span className="text-[#6B3AC2]"> HIRE </span>{" "}
+            <span className="text-[#FA4F09]">HUB</span>
           </h1>
         </div>
         <div className="flex items-center gap-10">
@@ -67,10 +67,6 @@ const Navbar = () => {
                 <li>
                   {" "}
                   <Link to={"/Jobs"}>Jobs</Link>
-                </li>
-                <li>
-                  {" "}
-                  <Link to={"/Creator"}>About</Link>
                 </li>
               </>
             )}
@@ -106,11 +102,14 @@ const Navbar = () => {
                       alt="@shadcn"
                     />
                   </Avatar>
-                  <div>
-                    <h3 className="font-medium">{user?.fullname}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {user?.profile?.bio}
-                    </p>
+                  <div className="flex flex-col gap-1">
+                    <div>
+                      <h3 className="font-medium">{user?.fullname}</h3>
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{user?.skills
+                        }</h3>
+                    </div>
                   </div>
                 </div>
 
@@ -118,7 +117,17 @@ const Navbar = () => {
                   {user && user.role === "Student" && (
                     <div className="flex w-fit items-center gap-2 cursor-pointer">
                       <User2></User2>
-                      <Button variant="link">
+                      <Button variant="ghost">
+                        {" "}
+                        <Link to={"/Profile"}> Profile</Link>{" "}
+                      </Button>
+                    </div>
+                  )}
+
+                   {user && user.role === "Recruiter" && (
+                    <div className="flex w-fit items-center gap-2 cursor-pointer">
+                      <User2></User2>
+                      <Button variant="ghost">
                         {" "}
                         <Link to={"/Profile"}> Profile</Link>{" "}
                       </Button>
@@ -127,7 +136,7 @@ const Navbar = () => {
 
                   <div className="flex w-fit items-center gap-2 cursor-pointer">
                     <LogOut></LogOut>
-                    <Button onClick={logoutHandler} variant="link">
+                    <Button onClick={logoutHandler} variant="ghost">
                       Logout
                     </Button>
                   </div>
@@ -142,3 +151,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

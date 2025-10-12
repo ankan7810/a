@@ -1,4 +1,4 @@
-export const USER_API_ENDPOINT = "https://hirehub-2wzm.onrender.com";
-export const JOB_API_ENDPOINT = "https://hirehub-2wzm.onrender.com";
-export const APPLICATION_API_ENDPOINT = "https://hirehub-2wzm.onrender.com";
-export const COMPANY_API_ENDPOINT = "https://hirehub-2wzm.onrender.com";
+export const USER_API_ENDPOINT = "https://hirehub-2wzm.onrender.com/api/user";
+export const JOB_API_ENDPOINT = "https://hirehub-2wzm.onrender.com/api/job";
+export const APPLICATION_API_ENDPOINT = "https://hirehub-2wzm.onrender.com/api/application";
+export const COMPANY_API_ENDPOINT = "https://hirehub-2wzm.onrender.com/api/company";

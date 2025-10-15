@@ -190,3 +190,29 @@ export const updateJob = async (req, res) => {
     return res.status(500).json({ message: "Server Error", status: false });
   }
 };
+
+
+
+export const stopJobController = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    if (!jobId) {
+      return res.status(400).json({ success: false, message: "Job ID required" });
+    }
+
+    const job = await Job.findById(jobId);
+    if (!job) return res.status(404).json({ success: false, message: "Job not found" });
+
+    if (job.stopped) {
+      return res.status(200).json({ success: true, message: "Job already stopped", job });
+    }
+
+    job.stopped = true;
+    await job.save();
+
+    return res.status(200).json({ success: true, message: "Job applications stopped", job });
+  } catch (error) {
+    console.error("Error stopping job:", error);
+    return res.status(500).json({ success: false, message: "Failed to stop job" });
+  }
+};

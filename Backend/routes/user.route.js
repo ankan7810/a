@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getProfile,
   login,
   logout,
   register,
@@ -16,6 +17,6 @@ router.route("/logout").post(logout);
 router
   .route("/profile/update")
   .post(authenticateToken, singleUpload, updateProfile);
-
+router.get("/profile/me", authenticateToken, getProfile);
 
 export default router;

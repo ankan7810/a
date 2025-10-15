@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import Navbar from "../components_lite/Navbar";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";

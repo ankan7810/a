@@ -137,7 +137,7 @@ export const login = async (req, res) => {
       .cookie("token", token, {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: "none",
+        sameSite: "Strict",
       })
       .json({
         message: `Welcome back ${user.fullname}`,
@@ -221,3 +221,73 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+
+// export const updateProfile = async (req, res) => {
+//   try {
+//     const userId = req.id; // ✅ middleware set this
+//     const { fullname, email, phoneNumber, bio, skills } = req.body;
+//     const file = req.file;
+
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "User not found",
+//       });
+//     }
+
+//     if (fullname) user.fullname = fullname;
+//     if (email) user.email = email;
+//     if (phoneNumber) user.phoneNumber = phoneNumber;
+//     if (bio) user.profile.bio = bio;
+//     if (skills) user.profile.skills = skills.split(",");
+
+//     if (file) {
+//       const fileUri = getDataUri(file);
+//       const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+//       user.profile.resume = cloudResponse.secure_url;
+//       user.profile.resumeOriginalname = file.originalname;
+//     }
+
+//     await user.save();
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Profile updated successfully",
+//       user,
+//     });
+//   } catch (error) {
+//     console.error("Error in updating profile:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Server error while updating profile",
+//     });
+//   }
+// };
+
+
+
+export const getProfile = async (req, res) => {
+  try {
+    const userId = req.id; // Middleware sets this
+    const user = await User.findById(userId).populate("profile.company");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching profile",
+    });
+  }
+};

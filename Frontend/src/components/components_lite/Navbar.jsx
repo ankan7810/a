@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Avatar, AvatarImage } from "../ui/avatar";
@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { LogOut, User2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import axios from "axios"; // Import axios
+import axios from "axios"; 
 import { setUser } from "@/redux/authSlice";
 import { USER_API_ENDPOINT } from "@/utils/data";
 
@@ -37,7 +37,7 @@ const Navbar = () => {
   return (
     <div className="bg-white">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
-        <div>
+        <div >
           <h1 className="text-2xl font-bold">
             <span className="text-[#6B3AC2]"> HIRE </span>{" "}
             <span className="text-[#FA4F09]">HUB</span>
@@ -107,8 +107,7 @@ const Navbar = () => {
                       <h3 className="font-medium">{user?.fullname}</h3>
                     </div>
                     <div>
-                      <h3 className="font-medium">{user?.skills
-                        }</h3>
+                      <h3 className="font-sm">{user?.profile?.bio}</h3>
                     </div>
                   </div>
                 </div>

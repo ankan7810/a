@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,14 +10,13 @@ import {
 } from "../ui/table";
 
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Edit2, Eye, MoreHorizontal } from "lucide-react";
+import { Edit2, Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+
 const AdminJobsTable = () => {
-  const { companies, searchCompanyByText } = useSelector(
-    (store) => store.company
-  );
+  const { companies } = useSelector((store) => store.company);
   const { allAdminJobs, searchJobByText } = useSelector((store) => store.job);
   const navigate = useNavigate();
 
@@ -27,23 +26,22 @@ const AdminJobsTable = () => {
     const filteredJobs =
       allAdminJobs.length >= 0 &&
       allAdminJobs.filter((job) => {
-        if (!searchJobByText) {
-          return true;
-        }
+        if (!searchJobByText) return true;
         return (
           job.title?.toLowerCase().includes(searchJobByText.toLowerCase()) ||
           job?.company?.name
-            .toLowerCase()
+            ?.toLowerCase()
             .includes(searchJobByText.toLowerCase())
         );
       });
     setFilterJobs(filteredJobs);
   }, [allAdminJobs, searchJobByText]);
 
-  console.log("COMPANIES", companies);
   if (!companies) {
     return <div>Loading...</div>;
   }
+
+  
 
   return (
     <div>
@@ -63,7 +61,7 @@ const AdminJobsTable = () => {
             <span>No Job Added</span>
           ) : (
             filterJobs?.map((job) => (
-              <TableRow key={job.id}>
+              <TableRow key={job._id}>
                 <TableCell>{job?.company?.name}</TableCell>
                 <TableCell>{job.title}</TableCell>
                 <TableCell>{job.createdAt.split("T")[0]}</TableCell>
@@ -72,17 +70,24 @@ const AdminJobsTable = () => {
                     <PopoverTrigger>
                       <MoreHorizontal />
                     </PopoverTrigger>
-                    <PopoverContent className="w-32">
-                      <div
-                        onClick={() => navigate(`/admin/companies/${job._id}`)}
-                        className="flex items-center gap-2 w-fit cursor-pointer mb-1"
+                    <PopoverContent className="w-40">
+                      {/* <div
+                        onClick={() => navigate(`/admin/jobs/edit/${job._id}`)}
+                        className="flex items-center gap-2 w-fit cursor-pointer mb-1 hover:text-blue-600 transition-colors"
                       >
                         <Edit2 className="w-4" />
                         <span>Edit</span>
                       </div>
-                      <hr />
-                      <div onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)} className="flex items-center gap-2 w-fit cursor-pointer mt-1">
-                        <Eye className="w-4"></Eye>
+
+                      <hr /> */}
+
+                      <div
+                        onClick={() =>
+                          navigate(`/admin/jobs/${job._id}/applicants`)
+                        }
+                        className="flex items-center gap-2 w-fit cursor-pointer mt-1 hover:text-blue-600 transition-colors"
+                      >
+                        <Eye className="w-4" />
                         <span>Applicants</span>
                       </div>
                     </PopoverContent>

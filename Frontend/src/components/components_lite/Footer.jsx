@@ -13,8 +13,8 @@ const Footer = () => {
         }}
       >
         <p>© 2025 HIREHUB. All rights reserved.</p>
-        <p>
-          Powered by <a href="https://github.com/ankan7810?tab=repositories">Ankan Roy</a>
+        <p >
+          Powered by Ankan Roy<p className="font-medium"></p>
         </p>
         <p>
           <Link to={"/PrivacyPolicy"}>Privacy Policy </Link> |

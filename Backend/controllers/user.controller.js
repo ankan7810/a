@@ -168,27 +168,37 @@ export const logout = async (req, res) => {
   }
 };
 
+
 export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
     const file = req.file;
+    const userId = req.id; 
 
-    const userId = req.id; // Assuming authentication middleware sets req.id
+    console.log("User ID from req.id:", userId);
+
     const user = await User.findById(userId);
+    // console.log("Fetched User:", user);
 
     if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-        success: false,
-      });
+      return res.status(404).json({ message: "User not found", success: false });
     }
 
-    if (fullname) user.fullname = fullname;
-    if (email) user.email = email;
-    if (phoneNumber) user.phoneNumber = phoneNumber;
-    if (bio) user.profile.bio = bio;
-    if (skills) user.profile.skills = skills.split(",");
+    if (fullname?.trim()) user.fullname = fullname.trim();
+    if (email?.trim()) user.email = email.trim();
+    if (phoneNumber?.trim()) user.phoneNumber = phoneNumber.trim();
+    if (bio?.trim()) user.profile.bio = bio.trim();
 
+    // Handle skills (either string or array)
+    if (skills) {
+      if (typeof skills === "string") {
+        user.profile.skills = skills.split(",").map((s) => s.trim());
+      } else if (Array.isArray(skills)) {
+        user.profile.skills = skills.map((s) => s.trim());
+      }
+    }
+
+    // Handle resume upload
     if (file) {
       const fileUri = getDataUri(file);
       const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
@@ -213,64 +223,20 @@ export const updateProfile = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
+    console.error("Update profile error:", error);
+    return res.status(500).json({
       message: "Server Error updating profile",
       success: false,
+      error: error.message,
     });
   }
 };
 
 
-// export const updateProfile = async (req, res) => {
-//   try {
-//     const userId = req.id; // ✅ middleware set this
-//     const { fullname, email, phoneNumber, bio, skills } = req.body;
-//     const file = req.file;
-
-//     const user = await User.findById(userId);
-//     if (!user) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "User not found",
-//       });
-//     }
-
-//     if (fullname) user.fullname = fullname;
-//     if (email) user.email = email;
-//     if (phoneNumber) user.phoneNumber = phoneNumber;
-//     if (bio) user.profile.bio = bio;
-//     if (skills) user.profile.skills = skills.split(",");
-
-//     if (file) {
-//       const fileUri = getDataUri(file);
-//       const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-//       user.profile.resume = cloudResponse.secure_url;
-//       user.profile.resumeOriginalname = file.originalname;
-//     }
-
-//     await user.save();
-
-//     return res.status(200).json({
-//       success: true,
-//       message: "Profile updated successfully",
-//       user,
-//     });
-//   } catch (error) {
-//     console.error("Error in updating profile:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Server error while updating profile",
-//     });
-//   }
-// };
-
-
-
 export const getProfile = async (req, res) => {
   try {
     const userId = req.id; // Middleware sets this
-    const user = await User.findById(userId).populate("profile.company");
+    const user = await User.findById(userId).populate("profile");
 
     if (!user) {
       return res.status(404).json({

@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: ["https://hirehub-frontend-1.onrender.com"],
   credentials: true,
 };
 
@@ -33,14 +33,6 @@ app.use("/api/user", userRoute);
 app.use("/api/company", companyRoute);
 app.use("/api/job", jobRoute);
 app.use("/api/application", applicationRoute);
-
-// if(process.env.NODE_ENV==="production"){
-//   const dirpath=Path.resolve();
-//   app.use(express.static('./Frontend/dist'))
-//   app.get('*',(req,res)=>{
-//     res.sendFile(path.resolve(dirpath,'./Frontend/dist','index.html'))
-//   })
-// }
 
 app.listen(PORT, () => {
   connectDB();

@@ -70,6 +70,7 @@ export const register = async (req, res) => {
     return res.status(201).json({
       message: `Account created successfully for ${fullname}`,
       success: true,
+      sameSite: "none"
     });
   } catch (error) {
     console.error(error);
